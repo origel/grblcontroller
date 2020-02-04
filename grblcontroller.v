@@ -53,7 +53,7 @@ fn main() {
 		width: win_width
 		height: win_height
 		user_ptr: app
-		title: 'V UI Demo'
+		title: 'GrblController'
 	}, [
 		ui.row({
 			stretch: true,
