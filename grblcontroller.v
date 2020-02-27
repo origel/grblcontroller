@@ -1,4 +1,4 @@
-import ui
+import vui
 import gx
 import os
 
@@ -20,15 +20,15 @@ struct User {
 
 struct App {
 mut:
-	first_name ui.TextBox
-	last_name  ui.TextBox
-	age        ui.TextBox
-	password   ui.TextBox
-	pbar       ui.ProgressBar
+	first_name vui.TextBox
+	last_name  vui.TextBox
+	age        vui.TextBox
+	password   vui.TextBox
+	pbar       vui.ProgressBar
 	users      []User
-	window     &ui.Window
-	label      ui.Label
-	country    ui.Radio
+	window     &vui.Window
+	label      vui.Label
+	country    vui.Radio
 	txt_pos    int
 }
 
@@ -49,112 +49,112 @@ fn main() {
 			}
 		]
 	}
-	window := ui.window({
+	window := vui.window({
 		width: win_width
 		height: win_height
 		user_ptr: app
 		title: 'GrblController'
 	}, [
-		ui.row({
+		vui.IWidgeter(vui.row({
 			stretch: true,
-			margin: ui.MarginConfig{10,10,10,10}
+			margin: vui.MarginConfig{10,10,10,10}
 		}, [
-			ui.column({
+			vui.IWidgeter(vui.column({
 				width: 200
 				spacing: 13
 			}, [
-				ui.textbox({
-					max_len: 20
-					width: 200
-					placeholder: 'First name'
-					ref: &app.first_name
-				}) as ui.IWidgeter,
-				ui.textbox({
+                vui.IWidgeter(vui.row({
+                    spacing: 50
+                }, [
+                    vui.IWidgeter(vui.textbox({
+                        max_len: 20
+                        width: 100
+                        placeholder: 'Serial Port'
+                    })),
+                    vui.button({
+                        text: 'Open'
+                        onclick: btn_help_click
+                    })
+                ])),
+				vui.textbox({
 					max_len: 50
 					width: 200
 					placeholder: 'Last name'
 					ref: &app.last_name
 				}),
-				ui.textbox({
+				vui.textbox({
 					max_len: 3
 					width: 200
 					placeholder: 'Age'
 					is_numeric: true
 					ref: &app.age
 				}),
-				ui.textbox({
+				vui.textbox({
 					width: 200
 					placeholder: 'Password'
 					is_password: true
 					max_len: 20
 					ref: &app.password
 				}),
-				ui.checkbox({
+				vui.checkbox({
 					checked: true
 					text: 'Online registration'
 				}),
-				ui.checkbox({
+				vui.checkbox({
 					text: 'Subscribe to the newsletter'
 				}),
-				ui.radio({
+				vui.radio({
 					width: 200
 					values: ['United States', 'Canada', 'United Kingdom', 'Australia']
 					title: 'Country'
 					ref: &app.country
 				}),
-				ui.row({
+				vui.row({
 					spacing: 85
 				}, [
-					ui.button({
+					vui.IWidgeter(vui.button({
 						text: 'Add user'
 						onclick: btn_add_click
-					}) as ui.IWidgeter,
-					ui.button({
+					})),
+					vui.button({
 						text: '?'
 						onclick: btn_help_click
 					})
 				]),
-				ui.row({
+				vui.row({
 					spacing: 5
 					alignment: .center
 				}, [
-					ui.progressbar({
+					vui.IWidgeter(vui.progressbar({
 						width: 170
 						max: 10
 						val: 2
 						ref: &app.pbar
-					}) as ui.IWidgeter,
-					ui.label({
+					})),
+					vui.label({
 						text: '2/10'
 						ref: &app.label
 					})
 				])
-			]) as ui.IWidgeter,
-			ui.column({
+			])),
+			vui.IWidgeter(vui.column({
 				stretch: true
 				alignment: .right
 			},[
-				ui.canvas({
+				vui.IWidgeter(vui.canvas({
 					height: 275
 					draw_fn:canvas_draw
-				}) as ui.IWidgeter,
-				ui.picture({
+				})),
+				vui.picture({
 					width: 100
 					height: 100
 					path: os.resource_abs_path( 'logo.png' )
 				})
-			])
-		]) as ui.IWidgeter,
-		ui.menu({
-			items: [
-				ui.MenuItem{'Delete all users', menu_click},
-				ui.MenuItem{'Export users', menu_click},
-				ui.MenuItem{'Exit', menu_click},
-			]
-		})
+			]))
+		]))
 	])
 	app.window = window
-	ui.run(window)
+	vui.run(window)
 }
 
 fn menu_click() {
@@ -162,11 +162,11 @@ fn menu_click() {
 }
 
 fn btn_help_click() {
-	ui.message_box('Built with V UI')
+	vui.message_box('Bvuilt with V vui')
 }
 
 fn btn_add_click(app mut App) {
-	//ui.notify('user', 'done')
+	//vui.notify('user', 'done')
 	//app.window.set_cursor(.hand)
 	if app.users.len >= 10 {
 		return
@@ -188,7 +188,7 @@ fn btn_add_click(app mut App) {
 	app.age.set_text('')
 	app.password.set_text('')
 	app.label.set_text('$app.users.len/10')
-	//ui.message_box('$new_user.first_name $new_user.last_name has been added')
+	//vui.message_box('$new_user.first_name $new_user.last_name has been added')
 }
 
 fn canvas_draw(app &App) {
